@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mansi's Birthday Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        .invitation-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        h1 {
+            color: #ff1493;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: colorChange 5s infinite;
+        }
+
+        @keyframes colorChange {
+            0% { color: #ff1493; }
+            33% { color: #ff69b4; }
+            66% { color: #ff4500; }
+            100% { color: #ff1493; }
+        }
+
+        .details {
+            margin: 2rem 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .personal-note {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #ff1493;
+            margin: 2rem 0;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Balloons float upward with gentle sway */
+        .balloon {
+            position: absolute;
+            bottom: -120px; /* start below the screen */
+            width: 36px;
+            height: 48px;
+            background: #ff69b4;
+            border-radius: 50% 50% 45% 45%;
+            transform-origin: center bottom;
+            box-shadow: inset -6px -8px 18px rgba(255,255,255,0.12), 0 6px 18px rgba(0,0,0,0.12);
+            animation-name: floatUp, sway;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: 1, infinite;
+            pointer-events: none;
+        }
+
+        .balloon::before {
+            /* string */
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            width: 2px;
+            height: 80px;
+            background: rgba(0,0,0,0.08);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            5% { opacity: 1; }
+            100% { transform: translateY(-140vh); opacity: 1; }
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(18px) rotate(4deg); }
+            50% { transform: translateX(0px) rotate(0deg); }
+            75% { transform: translateX(-18px) rotate(-4deg); }
+            100% { transform: translateX(0) rotate(0deg); }
+        }
+
+        .rsvp {
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 1rem;
+        }
+
+        .rsvp:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: confettiFall 5s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Gift box / opening screen styles */
+        .gift-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(180deg, rgba(255,20,147,0.08), rgba(255,105,180,0.06));
+            z-index: 10;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .gift-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .gift-box {
+            width: 220px;
+            height: 160px;
+            position: relative;
+            perspective: 800px;
+            cursor: pointer;
+        }
+
+        .gift-box .lid {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -24px;
+            height: 60px;
+            background: linear-gradient(180deg, #ff69b4, #ff1493);
+            border-radius: 12px 12px 0 0;
+            transform-origin: center bottom;
+            transform: rotateX(0deg);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+            transition: transform 0.9s cubic-bezier(.2,.9,.2,1);
+            z-index: 4;
+        }
+
+        .gift-box .box-body {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 36px;
+            background: linear-gradient(180deg, #fff0f6, #ffe6f2);
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .gift-box .ribbon.horizontal {
+            position: absolute;
+            height: 18px;
+            left: 10px;
+            right: 10px;
+            top: 66px;
+            background: linear-gradient(90deg, #fff1f8, #ff69b4);
+            border-radius: 6px;
+            z-index: 3;
+        }
+
+        .gift-box .ribbon.vertical {
+            position: absolute;
+            width: 18px;
+            height: 90px;
+            left: calc(50% - 9px);
+            top: 46px;
+            background: linear-gradient(180deg, #fff1f8, #ff1493);
+            border-radius: 6px;
+            z-index: 3;
+        }
+
+        .gift-box.open .lid {
+            transform: rotateX(-120deg) translateY(-12px);
+        }
+
+        .tap-text {
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            transition: opacity 0.4s;
+        }
+
+        .tap-text.hide { opacity: 0; }
+
+        /* Invitation wrapper hidden by default */
+        .invitation-wrapper {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.96) translateY(10px);
+            transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s;
+        }
+
+        .invitation-wrapper.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        /* make sure animated elements sit behind the card */
+        .sparkle, .balloon, .confetti { z-index: 0; pointer-events: none; }
+
+        /* glowing card */
+        .invitation-card {
+            transition: box-shadow 0.4s ease, transform 0.4s ease;
+        }
+
+        .invitation-card.glow {
+            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.18), 0 6px 30px rgba(255,105,180,0.12) inset;
+            transform: translateY(-6px) scale(1.01);
+        }
+
+        /* title typing effect */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .title-typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid rgba(255,20,147,0.9);
+            animation: caret 0.8s steps(1) infinite;
+        }
+
+        @keyframes caret {
+            50% { border-color: transparent; }
+        }
+
+        /* RSVP pulse */
+        .rsvp {
+            animation: rsvpPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes rsvpPulse {
+            0% { box-shadow: 0 6px 18px rgba(255,20,147,0.18); transform: scale(1); }
+            50% { box-shadow: 0 18px 40px rgba(255,20,147,0.22); transform: scale(1.03); }
+            100% { box-shadow: 0 6px 18px rgba(255,20,147,0.18); transform: scale(1); }
+        }
+
+        /* starfield canvas sits behind everything but above background */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            display: block;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- starfield canvas -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Opening gift box screen -->
+    <div class="gift-screen" id="giftScreen">
+        <div class="gift-box" id="giftBox" title="Click to open">
+            <div class="lid"></div>
+            <div class="box-body">
+                <div class="ribbon horizontal"></div>
+                <div class="ribbon vertical"></div>
+            </div>
+        </div>
+        <p class="tap-text">Click the box to open the invitation</p>
+    </div>
+
+    <!-- Hidden invitation that appears after opening the box -->
+    <div class="invitation-wrapper" id="invitationWrapper" aria-hidden="true">
+        <div class="invitation-card" id="invitationCard">
+            <h1>✨ You're Invited! ✨</h1>
+            
+            <div class="details">
+                <p style="font-size: 1.4em; color: #ff1493; margin: 1rem 0;">Join me for my Birthday Celebration!</p>
+                <p style="margin: 1rem 0;">🎉 Saturday, November 8th, 2025</p>
+                <p>📍 kaffeeno</p>
+                <p>near- 7th heaven,opposite khalsa collage</p>
+            </div>
+
+            <div class="personal-note">
+                <p>"Dear Friends,</p>
+                <p>As I turn another year older, my heart is filled with joy knowing that I'll be celebrating this special day with all of you. Your presence would make this celebration truly magical! There will be music, dancing, delicious food, and countless moments of laughter and joy.</p>
+                <p>Let's make this evening unforgettable together! 🎈✨</p>
+                <p>With love and excitement,<br>Mansi Thakur 💖"</p>
+            </div>
+
+            <button class="rsvp" onclick="alert('Thank you! Looking forward to celebrating with you!')">RSVP Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Create sparkles, balloons, and confetti only after opening
+        function createSparkles() {
+            for(let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(sparkle);
+            }
+        }
+
+        function createBalloons() {
+            const colors = ['#ff69b4', '#ff1493', '#FFD700', '#ff4500', '#fff'];
+            const count = 14;
+            for(let i = 0; i < count; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                const size = 26 + Math.floor(Math.random() * 36);
+                balloon.style.width = size + 'px';
+                balloon.style.height = Math.round(size * 1.25) + 'px';
+                balloon.style.left = (5 + Math.random() * 90) + 'vw';
+                balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+                const dur = 10 + Math.random() * 12; // seconds to float up
+                balloon.style.animationDuration = dur + 's, ' + (3 + Math.random() * 4) + 's';
+                balloon.style.opacity = 0.95;
+                document.body.appendChild(balloon);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ff1493', '#FFD700', '#ff4500', '#FFF'];
+            for(let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        // Open box and reveal invitation
+        const giftBox = document.getElementById('giftBox');
+        const giftScreen = document.getElementById('giftScreen');
+        const invitationWrapper = document.getElementById('invitationWrapper');
+
+        // Audio context and nodes will be created on first interaction
+        let audioCtx = null;
+        let bgOsc1 = null, bgOsc2 = null, bgGain = null, bgPlaying = false;
+
+        function ensureAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Short musical chime (arpeggio) when box opens
+        function playChime() {
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.18, now + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
+            gain.connect(audioCtx.destination);
+
+            const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+            freqs.forEach((f, i) => {
+                const o = audioCtx.createOscillator();
+                o.type = 'sine';
+                o.frequency.setValueAtTime(f, now + i * 0.12);
+                o.connect(gain);
+                o.start(now + i * 0.12);
+                o.stop(now + i * 0.12 + 0.8);
+            });
+        }
+
+        // Calmer piano-like background loop using scheduled notes
+        let bgLoopId = null;
+        function startBackgroundMusic() {
+            if (bgPlaying) return;
+            ensureAudio();
+            bgPlaying = true;
+
+            // light ambience using scheduled piano-like notes
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+            const tempo = 14000; // ms between arpeggio cycles (slow, calm)
+
+            function playNote(freq, startOffset, duration, velocity) {
+                const now = audioCtx.currentTime + startOffset;
+                const o = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+
+                // slightly detuned blended waveform for warmth
+                o.type = 'triangle';
+                o.frequency.setValueAtTime(freq, now);
+                o.detune.setValueAtTime((Math.random() - 0.5) * 6, now);
+
+                filter.type = 'lowpass';
+                filter.frequency.value = 1200;
+
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.linearRampToValueAtTime(velocity, now + 0.01);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+                // gentle ambience: a small feedback delay
+                const delay = audioCtx.createDelay();
+                delay.delayTime.value = 0.45;
+                const fb = audioCtx.createGain();
+                fb.gain.value = 0.12;
+
+                o.connect(filter);
+                filter.connect(gain);
+                gain.connect(delay);
+                delay.connect(fb);
+                fb.connect(delay);
+                delay.connect(audioCtx.destination);
+
+                // also direct to output for clarity (very low)
+                gain.connect(audioCtx.destination);
+
+                o.start(now);
+                o.stop(now + duration + 0.2);
+            }
+
+            // first immediate cycle
+            (function scheduleCycle() {
+                const baseTime = 0.02; // small offset
+                // play a slow arpeggio
+                notes.forEach((n, i) => {
+                    playNote(n, baseTime + i * 0.6, 2.2, 0.06);
+                });
+            })();
+
+            // repeat cycles
+            bgLoopId = setInterval(() => {
+                const baseTime = 0.02;
+                notes.forEach((n, i) => {
+                    playNote(n, baseTime + i * 0.6, 2.2, 0.06);
+                });
+            }, tempo);
+        }
+
+        function stopBackgroundMusic() {
+            if (!bgPlaying) return;
+            bgPlaying = false;
+            if (bgLoopId) { clearInterval(bgLoopId); bgLoopId = null; }
+        }
+
+        // Play a soft "Happy Birthday" melody once using scheduled notes
+        function playBirthdayMelody() {
+            ensureAudio();
+            const now = audioCtx.currentTime + 0.02;
+            // melody in Hz (key of C, starting on G)
+            const notes = [392.00,392.00,440.00,392.00,523.25,493.88,
+                           392.00,392.00,440.00,392.00,587.33,523.25,
+                           392.00,392.00,783.99,659.25,523.25,493.88,440.00,
+                           698.46,698.46,659.25,523.25,587.33,523.25];
+            const durations = [0.45,0.45,0.9,0.9,0.9,1.0,
+                               0.45,0.45,0.9,0.9,0.9,1.0,
+                               0.45,0.45,0.9,0.9,0.9,0.9,1.0,
+                               0.45,0.45,0.9,0.9,0.9,1.2];
+
+            let t = now;
+            for (let i = 0; i < notes.length; i++) {
+                const f = notes[i];
+                const dur = durations[i] || 0.6;
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.type = 'sine';
+                o.frequency.setValueAtTime(f, t);
+                // gentle envelope
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(0.12, t + 0.01);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                o.connect(g);
+                g.connect(audioCtx.destination);
+                o.start(t);
+                o.stop(t + dur + 0.02);
+                t += dur * 0.9; // slight overlap
+            }
+        }
+
+        giftBox.addEventListener('click', () => {
+            giftBox.classList.add('open');
+            document.querySelector('.tap-text').classList.add('hide');
+
+            // play chime on open
+                try { playChime(); } catch(e) { console.warn(e); }
+
+                // play birthday melody once (soft)
+                try { playBirthdayMelody(); } catch (e) { console.warn(e); }
+
+            // After lid animation, show invitation
+            setTimeout(() => {
+                giftScreen.classList.add('fade-out');
+                invitationWrapper.setAttribute('aria-hidden', 'false');
+                invitationWrapper.classList.add('show');
+
+                // start animations
+                createSparkles();
+                createBalloons();
+                createConfetti();
+
+                // start gentle background music if enabled
+                if (musicEnabled) startBackgroundMusic();
+            }, 1200);
+        });
+
+        // --- Additional visual effects ---
+        // Starfield background
+        const starCanvas = document.getElementById('starfield');
+        const sCtx = starCanvas.getContext('2d');
+        function resizeStarfield() {
+            starCanvas.width = window.innerWidth;
+            starCanvas.height = window.innerHeight;
+        }
+        resizeStarfield();
+        window.addEventListener('resize', resizeStarfield);
+
+        const stars = [];
+        function initStarfield(count = 120) {
+            stars.length = 0;
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * starCanvas.width,
+                    y: Math.random() * starCanvas.height,
+                    r: Math.random() * 1.6 + 0.3,
+                    alpha: 0.3 + Math.random() * 0.7,
+                    twinkle: Math.random() * 2000
+                });
+            }
+        }
+
+        function drawStarfield() {
+            sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+            const grad = sCtx.createLinearGradient(0,0,0,starCanvas.height);
+            grad.addColorStop(0, 'rgba(255,105,180,0.02)');
+            grad.addColorStop(1, 'rgba(255,20,147,0.02)');
+            sCtx.fillStyle = grad;
+            sCtx.fillRect(0,0,starCanvas.width,starCanvas.height);
+
+            const t = Date.now();
+            for (const st of stars) {
+                const a = st.alpha * (0.7 + 0.3 * Math.sin((t + st.twinkle) / 400));
+                sCtx.beginPath();
+                sCtx.fillStyle = `rgba(255,255,255,${a})`;
+                sCtx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+                sCtx.fill();
+            }
+            requestAnimationFrame(drawStarfield);
+        }
+        initStarfield();
+        drawStarfield();
+
+        // Particle burst on open
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.style.position = 'fixed';
+        particleCanvas.style.inset = '0';
+        particleCanvas.style.zIndex = 20;
+        particleCanvas.style.pointerEvents = 'none';
+        document.body.appendChild(particleCanvas);
+        const pCtx = particleCanvas.getContext('2d');
+        function resizeParticles() { particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight; }
+        resizeParticles(); window.addEventListener('resize', resizeParticles);
+
+        let particles = [];
+        function startParticleBurst(x, y, count = 40) {
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * 6;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 2,
+                    life: 60 + Math.random() * 40,
+                    age: 0,
+                    color: ['#ff69b4','#ff1493','#FFD700','#ff4500','#fff'][Math.floor(Math.random()*5)]
+                });
+            }
+            animateParticles();
+        }
+
+        let particleAnim = null;
+        function animateParticles() {
+            if (particleAnim) cancelAnimationFrame(particleAnim);
+            function step() {
+                pCtx.clearRect(0,0,particleCanvas.width, particleCanvas.height);
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.vy += 0.12; // gravity
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.age++;
+                    const alpha = Math.max(0, 1 - p.age / p.life);
+                    pCtx.fillStyle = p.color;
+                    pCtx.globalAlpha = alpha;
+                    pCtx.beginPath();
+                    pCtx.arc(p.x, p.y, 4 * alpha + 1, 0, Math.PI*2);
+                    pCtx.fill();
+                    if (p.age > p.life) particles.splice(i,1);
+                }
+                pCtx.globalAlpha = 1;
+                if (particles.length) particleAnim = requestAnimationFrame(step);
+            }
+            particleAnim = requestAnimationFrame(step);
+        }
+
+        // when box opens, burst particles from the box center and add glow
+        const giftBoxRect = () => giftBox.getBoundingClientRect();
+        const originalAdd = giftBox.addEventListener.bind(giftBox);
+        // we'll also trigger burst and glow inside the existing listener — augment below:
+        giftBox.addEventListener('click', () => {
+            const r = giftBoxRect();
+            const cx = r.left + r.width/2;
+            const cy = r.top + r.height/2 - 10;
+            startParticleBurst(cx, cy, 60);
+            // glow the card gently
+            const card = document.getElementById('invitationCard');
+            card.classList.add('glow');
+            setTimeout(() => card.classList.remove('glow'), 3500);
+            // title typing effect
+            const h = document.querySelector('#invitationCard h1');
+            typingEffect(h, "✨ You're Invited! ✨");
+        }, { once: true });
+
+        // typing effect utility (splits text then types to element)
+        function typingEffect(node, text, interval = 60) {
+            node.textContent = '';
+            node.classList.add('title-typing');
+            let i = 0;
+            const id = setInterval(() => {
+                node.textContent += text.charAt(i);
+                i++;
+                if (i >= text.length) { clearInterval(id); node.classList.remove('title-typing'); }
+            }, interval);
+        }
+
+    </script>
+</body>
+</html>
